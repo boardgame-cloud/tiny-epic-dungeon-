@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tiny Epic Dungeons: Table Reference</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --stone:#1b1923; --slab:#24212f; --slab2:#2d2a3b; --line:#3c3750;
+  --ink:#ece3cf; --dim:#b4aa92; --faint:#857c69;
+  --flame:#f5b942; --ember:#c9641e;
+  --heroic:#3d7fc4; --free:#dd7a26;
+  --str:#d0503f; --agi:#4fa060; --int:#9a66d0; --any:#8a8578;
+  --gob:#6fae52; --min:#d9772b; --loot:#e0bf4a; --spell:#4cb4e6; --boss:#c43a4f; --room:#7d8aa3;
+  --display:"IM Fell English SC", "Palatino Linotype", Palatino, Georgia, serif;
+  --body:"Alegreya Sans", "Gill Sans", "Segoe UI", system-ui, sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--stone);color:var(--ink);font:400 19px/1.55 var(--body);
+  background-image:radial-gradient(ellipse 80% 40% at 50% -5%, rgba(245,185,66,.13), transparent 70%);
+  background-attachment:fixed}
+a{color:var(--flame)}
+:focus-visible{outline:2px solid var(--flame);outline-offset:2px;border-radius:3px}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.1;margin:0}
+h2{font-size:clamp(1.9rem,5vw,2.5rem);color:var(--flame);margin-bottom:.35em}
+h3{font-size:1.5rem;margin:1.6em 0 .45em;color:var(--ink)}
+p{margin:.5em 0 .9em}
+ul,ol{padding-left:1.25em;margin:.4em 0 1em}
+li{margin:.25em 0}
+strong{font-weight:700;color:#fff6e2}
+small,.dim{color:var(--dim)}
+.wrap{max-width:780px;margin:0 auto;padding:0 18px}
+.wide{max-width:1180px}
+
+/* ---------- top bar ---------- */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(27,25,35,.94);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar-in{display:flex;align-items:center;gap:12px;max-width:1180px;margin:0 auto;padding:8px 14px}
+.count{display:flex;align-items:center;gap:6px;flex:none;font-size:.86rem;color:var(--dim)}
+.seg{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.seg button{all:unset;cursor:pointer;padding:9px 13px;font:700 1.05rem var(--body);color:var(--dim)}
+.seg button[aria-pressed="true"]{background:var(--flame);color:#2a1a05}
+.seg button:focus-visible{outline:2px solid var(--flame);outline-offset:-2px}
+.nav{display:flex;gap:4px;overflow-x:auto;min-width:0;scrollbar-width:none;flex:1;mask-image:linear-gradient(90deg,#000 88%,transparent)}
+.nav::-webkit-scrollbar{display:none}
+.nav a{flex:none;text-decoration:none;color:var(--ink);font-size:1rem;padding:10px 10px;border-radius:6px}
+.nav a:hover{background:var(--slab2)}
+
+/* ---------- hero ---------- */
+header.top{padding:54px 0 26px}
+.kicker{color:var(--dim);font-size:1rem;margin:0 0 6px}
+h1{font-size:clamp(2.6rem,10vw,5.2rem);letter-spacing:-.01em;color:var(--ink);
+  text-shadow:0 0 28px rgba(245,185,66,.35)}
+h1 span{display:block;font-size:.42em;color:var(--flame);letter-spacing:.02em;margin-top:6px}
+.lede{font-size:1.12rem;max-width:60ch;color:var(--dim)}
+.lose{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:22px 0 4px}
+.lose div{background:var(--slab);border-left:3px solid var(--boss);padding:11px 13px;border-radius:0 8px 8px 0;font-size:1rem}
+.lose div.win{border-left-color:var(--agi)}.lose .win b{color:#bfe6c4}
+.lose b{display:block;font-family:var(--display);font-weight:400;font-size:1.1rem;color:#f2c1c8}
+
+section{padding:46px 0 20px;border-top:1px solid var(--line)}
+
+
+/* ---------- plaques (mirror the game's icon colours) ---------- */
+.pl{display:inline-block;font:700 .82rem/1 var(--body);padding:5px 9px 4px;border-radius:4px;vertical-align:.12em;white-space:nowrap;color:#fff}
+.pl.h{background:var(--heroic)} .pl.f{background:var(--free)} .pl.t{background:#5a5470} .pl.hand{background:transparent;border:1px solid var(--faint);color:var(--dim)}
+.sk{display:inline-flex;align-items:center;gap:4px;font-weight:700;white-space:nowrap}
+.sk::before{content:"";width:.8em;height:.8em;border-radius:2px;background:currentColor}
+.sk.s{color:var(--str)} .sk.a{color:var(--agi)} .sk.i{color:var(--int)} .sk.x{color:#bdb6a6}
+
+/* ---------- callouts ---------- */
+.note{background:var(--slab);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin:14px 0}
+.note.warn{border-color:#6e3a2a;background:#2b1f1f}
+.note.unv{border-style:dashed;border-color:#6b6377}
+.note > :first-child{margin-top:0}.note > :last-child{margin-bottom:0}
+
+/* ---------- setup ---------- */
+.phase{margin:26px 0 8px;font-family:var(--display);font-size:1.25rem;color:var(--dim)}
+ol.steps{list-style:none;padding:0;counter-reset:none}
+ol.steps li{display:grid;grid-template-columns:2.1em 1fr;gap:10px;padding:9px 0;border-bottom:1px dashed var(--line);margin:0}
+ol.steps li > b:first-child{font-family:var(--display);font-weight:400;font-size:1.35rem;color:var(--flame);line-height:1.1}
+.n{display:inline-block;min-width:1.5em;text-align:center;background:var(--flame);color:#2a1a05;font-weight:800;border-radius:5px;padding:0 4px}
+
+.stack{display:grid;gap:0;margin:16px 0 8px;max-width:520px}
+.deck{position:relative;padding:12px 14px 12px 64px;border-radius:9px;border:1px solid var(--line);margin-top:-6px;
+  box-shadow:0 6px 0 -1px #15131c, 0 10px 0 -2px #121018}
+.deck:first-child{margin-top:0}
+.deck .lt{position:absolute;left:14px;top:50%;transform:translateY(-50%);font:400 2rem/1 var(--display)}
+.deck.A{background:#2f3442;z-index:3}.deck.B{background:#2c2b3f;z-index:2}.deck.C{background:#3a2430;z-index:1}
+.deck.A .lt{color:#a9b9d6}.deck.B .lt{color:#b9a8e0}.deck.C .lt{color:#f0a3b4}
+.deck small{display:block}
+
+.gridfig{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.gridfig svg{width:200px;height:auto;flex:none}
+.gridfig p{flex:1;min-width:220px;margin:0}
+
+/* ---------- turn flow ---------- */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:14px 0}
+.flow > div{background:var(--slab);border-radius:10px;padding:12px 14px;border-top:4px solid var(--line)}
+.flow .mv{border-top-color:#8f99ad}.flow .ha{border-top-color:var(--heroic)}.flow .fa{border-top-color:var(--free)}.flow .end{border-top-color:var(--flame);background:#2d2418}
+.flow b{font-family:var(--display);font-weight:400;font-size:1.2rem;display:block;margin-bottom:2px}
+
+/* dice */
+.dice{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.die{width:58px;height:58px;border-radius:10px;background:#12111a;border:1px solid #4a4560;display:grid;place-items:center;text-align:center;line-height:1;font:800 1.3rem var(--body)}
+.die small{display:block;font:700 .62rem var(--body);margin-top:3px}
+.die.red{background:#3b1517;border-color:#7a2a30}
+.die .fo{color:var(--flame)} .die .hp{color:#ff6f7d}
+
+table{width:100%;border-collapse:collapse;font-size:1rem}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;color:var(--dim);font-size:.9rem}
+.tscroll{overflow-x:auto;margin:10px 0 16px;border:1px solid var(--line);border-radius:10px;background:var(--slab)}
+.tscroll table{min-width:0}
+
+ol.seq{counter-reset:s;list-style:none;padding:0}
+ol.seq > li{counter-increment:s;position:relative;padding:8px 0 8px 40px;margin:0;border-bottom:1px dashed var(--line)}
+ol.seq > li::before{content:counter(s);position:absolute;left:0;top:7px;width:28px;height:28px;border-radius:50%;background:var(--slab2);border:1px solid var(--line);display:grid;place-items:center;font-weight:800;color:var(--flame);font-size:.9rem}
+
+/* action entries */
+.act{background:var(--slab);border-radius:10px;padding:13px 15px;margin:12px 0;border-left:4px solid var(--heroic)}
+.act.fr{border-left-color:var(--free)}
+.act h4{margin:0 0 4px;font:700 1.15rem var(--body)}
+.act p:last-child,.act ul:last-child{margin-bottom:0}
+
+/* ---------- cards ---------- */
+.tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:8px 0 16px}
+.tools input{flex:1;min-width:200px;font-size:1.05rem!important;background:var(--slab);border:1px solid var(--line);color:var(--ink);font:inherit;padding:10px 12px;border-radius:9px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button{all:unset;cursor:pointer;font-size:.95rem;padding:9px 13px;border-radius:999px;border:1px solid var(--line);color:var(--dim)}
+.chips button[aria-pressed="true"]{border-color:var(--flame);color:var(--flame)}
+.chips button:focus-visible{outline:2px solid var(--flame)}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.card{background:var(--slab);border-radius:12px;padding:15px 16px;border-top:4px solid var(--c,var(--line));font-size:1rem}
+.card h4{margin:0;font:700 1.2rem/1.2 var(--body);display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.card h4 em{font-style:normal;font-weight:500;font-size:.8rem;color:var(--dim);white-space:nowrap}
+.card p{margin:.4em 0 0}
+.card .meta{font-size:.92rem;color:var(--dim);margin-top:2px}
+.card.unv{border-top-style:dashed;background:transparent;border:1px dashed #5b5468;border-top:4px dashed var(--c)}
+.cgroup{margin:30px 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.cgroup h3{margin:0}
+.hidden{display:none!important}
+
+/* heroes */
+.hero{--c:var(--flame)}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 6px}
+.stat{display:flex;align-items:center;gap:4px;font-weight:800}
+.stat svg{width:17px;height:17px}
+.skills{display:flex;gap:12px;margin:2px 0 8px;font-size:.88rem}
+.pips{display:inline-flex;gap:2px;margin-left:3px}
+.pips i{width:9px;height:9px;border-radius:2px;background:currentColor;opacity:.22}
+.pips i.on{opacity:1}
+.ab{margin:7px 0 0;padding-top:7px;border-top:1px dashed var(--line)}
+.ab b{font-weight:700}
+
+
+/* ---------- search ---------- */
+.sbtn{all:unset;cursor:pointer;flex:none;display:flex;align-items:center;gap:6px;padding:10px 12px;border-radius:999px;background:var(--slab2);border:1px solid var(--line);color:var(--ink);font:700 .9rem var(--body)}
+.sbtn svg{width:19px;height:19px}
+.sbtn:focus-visible{outline:2px solid var(--flame)}
+.spanel{position:fixed;inset:0;z-index:50;background:rgba(12,11,17,.72);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);
+  padding:calc(env(safe-area-inset-top,0px) + 10px) 10px calc(env(safe-area-inset-bottom,0px) + 10px)}
+.sbox{max-width:720px;margin:0 auto;background:var(--slab);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;max-height:100%;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.srow{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.srow svg{width:20px;height:20px;color:var(--flame);flex:none}
+.srow input{flex:1;min-width:0;background:transparent;border:0;color:var(--ink);font:500 1.1rem var(--body);padding:6px 2px}
+.srow input:focus{outline:none}
+.sx{all:unset;cursor:pointer;color:var(--dim);font-size:.9rem;padding:4px 8px;border-radius:6px}
+.sx:focus-visible{outline:2px solid var(--flame)}
+.sres{overflow-y:auto;padding:6px}
+.sres a{display:block;text-decoration:none;color:var(--ink);padding:12px 12px;border-radius:9px}
+.sres a:hover,.sres a[aria-selected="true"]{background:var(--slab2)}
+.sres .sec{font-size:.78rem;color:var(--dim);display:block}
+.sres .tt{font-weight:700;display:block}
+.sres .sn{font-size:.98rem;color:var(--dim);display:block}
+.sres mark{background:rgba(245,185,66,.28);color:#fff3d6;border-radius:2px;padding:0 1px}
+.sres .empty{padding:14px;color:var(--dim)}
+.flash{animation:flash 1.8s ease-out}
+@keyframes flash{0%,35%{box-shadow:0 0 0 3px var(--flame)}100%{box-shadow:0 0 0 3px transparent}}
+a.art{font:600 .85rem var(--body);color:var(--spell);text-decoration:none;border-bottom:1px solid rgba(76,180,230,.4);margin-left:6px;display:inline-block;white-space:nowrap}
+a.art::before{content:"";display:inline-block;width:.75em;height:.6em;border:1.5px solid currentColor;border-radius:2px;margin-right:4px;vertical-align:.05em}
+.card a.art{margin:8px 0 0;display:inline-block}
+.attrs{list-style:none;padding:0}
+.attrs li{display:grid;grid-template-columns:22px 1fr;gap:8px;margin:.5em 0}
+.attrs svg{width:19px;height:19px;margin-top:3px}
+@media (max-width:560px){.sbtn span{display:none}}
+
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+textarea{width:100%;min-height:90px;background:var(--stone);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:.92rem;resize:vertical}
+footer{padding:40px 0 60px;color:var(--faint);font-size:.88rem;border-top:1px solid var(--line)}
+@media (max-width:560px){.count .lbl{display:none} header.top{padding-top:30px} .wrap{padding:0 16px} .cgrid{grid-template-columns:1fr} section{padding-top:38px} .bar-in{padding:6px 10px;gap:8px} ol.steps li{grid-template-columns:1.6em 1fr}}
+@media print{.bar,.tools{display:none}body{background:#fff;color:#000}section{break-inside:avoid-page}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-hp" viewBox="0 0 24 24"><path fill="#ff6f7d" d="M12 21s-7.5-4.6-9.6-9.3C.9 8.2 3 4.5 6.6 4.5c2.1 0 3.6 1.2 5.4 3.2 1.8-2 3.3-3.2 5.4-3.2 3.6 0 5.7 3.7 4.2 7.2C19.5 16.4 12 21 12 21z"/></symbol>
+  <symbol id="i-fo" viewBox="0 0 24 24"><path fill="#f5b942" d="M13.5 2 4 13.5h6.2L9 22l10-12.2h-6.4z"/></symbol>
+  <symbol id="i-sp" viewBox="0 0 24 24"><path fill="#a9b9d6" d="M6 3h5l1 8 6 3c1.5.7 2 1.6 2 3v2H4v-3l2-1z"/><rect x="4" y="19" width="16" height="2" rx="1" fill="#a9b9d6"/></symbol>
+  <symbol id="i-df" viewBox="0 0 24 24"><path fill="#9fb0c8" d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></symbol>
+  <symbol id="i-q" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="bar">
+  <div class="bar-in">
+    <button type="button" class="sbtn" id="sbtn" aria-label="Search the whole page" aria-keyshortcuts="/"><svg aria-hidden="true"><use href="#i-q"/></svg><span>Search</span></button>
+    <div class="count" role="group" aria-label="Number of Heroes">
+      <span class="lbl">Heroes</span>
+      <div class="seg" id="seg">
+        <button type="button" data-v="2" aria-pressed="false" aria-label="2 Heroes">2</button>
+        <button type="button" data-v="3" aria-pressed="false" aria-label="3 Heroes">3</button>
+        <button type="button" data-v="4" aria-pressed="true" aria-label="4 Heroes">4</button>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#setup">Setup</a><a href="#turn">On Your Turn</a><a href="#move">Move</a><a href="#checks">Skill Checks</a>
+      <a href="#heroic">Heroic Actions</a><a href="#combat">Attack</a><a href="#free">Free Actions</a><a href="#traps">Traps</a>
+      <a href="#torch">Torch Mat</a><a href="#boss">Act 2</a><a href="#loot">Loot</a>
+      <a href="#heroes">Heroes</a><a href="#cards">Cards</a>
+    </nav>
+  </div>
+</div>
+
+<div class="spanel hidden" id="spanel" role="dialog" aria-modal="true" aria-label="Search">
+  <div class="sbox">
+    <div class="srow">
+      <svg aria-hidden="true"><use href="#i-q"/></svg>
+      <input id="sq" type="search" placeholder="Search rules and cards, e.g. unconscious, Minotaur, altar" autocomplete="off" aria-label="Search rules and cards" aria-controls="sres">
+      <button type="button" id="sclose" class="sx">Close</button>
+    </div>
+    <div class="sres" id="sres" role="listbox" aria-label="Results"></div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <p class="kicker">Table reference for 1 to 4 players</p>
+    <h1>Tiny Epic Dungeons<span>Rules, Setup, Heroes and every card</span></h1>
+    <p class="lede">Set the number of Heroes in the top bar; Setup values update. <span class="pl h">Heroic</span> = blue plaque, <span class="pl f">Free</span> = orange plaque.</p>
+    <div class="lose">
+      <div class="win"><b>Victory</b>Defeat the Boss in Act 2.</div>
+      <div><b>Defeat</b>A fifth Goblin must be placed.</div>
+      <div><b>Defeat</b>The torch reaches the skull.</div>
+      <div><b>Defeat</b>No open corridors remain and the Lair Door is unrevealed.</div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= SETUP ================= -->
+<section id="setup">
+<div class="wrap">
+  <h2>Game Setup</h2>
+  <p>Setup for <span class="n" data-n="h">4</span> Heroes. Solo: control at least 2 Heroes. <strong>The number of Heroes is the player count.</strong></p>
+  <p>Separate the <strong>Entrance</strong>, <strong>Rooms</strong>, <strong>Encounters</strong>, and <strong>Lair Door</strong>. Shuffle each deck.</p>
+
+  <div class="phase">The Dungeon Deck</div>
+  <ol class="steps">
+    <li><b>A</b><div><strong>Deck A:</strong> draw <span class="n" data-n="deckA">5</span> Rooms.</div></li>
+    <li><b>B</b><div><strong>Deck B:</strong> draw <span class="n" data-n="h">4</span> Encounters and <span class="n" data-n="roomB">12</span> Rooms. Shuffle together unseen.</div></li>
+    <li><b>C</b><div><strong>Deck C:</strong> draw 3 Rooms and shuffle with the <strong>Lair Door</strong>.</div></li>
+    <li><b>D</b><div>Stack facedown: <strong>C bottom, B middle, A top.</strong></div></li>
+    <li><b>E</b><div>Return unused Rooms and Encounters to the box.</div></li>
+  </ol>
+  <div class="stack" aria-label="Dungeon Deck stack">
+    <div class="deck A"><span class="lt">A</span><b>Top: <span data-n="deckA">5</span> Rooms</b></div>
+    <div class="deck B"><span class="lt">B</span><b>Middle: <span data-n="totB">16</span> cards</b><small><span data-n="h">4</span> Encounters + <span data-n="roomB">12</span> Rooms</small></div>
+    <div class="deck C"><span class="lt">C</span><b>Bottom: 4 cards</b><small>3 Rooms + Lair Door</small></div>
+  </div>
+
+  <div class="phase">The Dungeon</div>
+  <ol class="steps">
+    <li><b>F</b><div>Place the <strong>Entrance</strong> faceup in the center.</div></li>
+    <li><b>G</b><div>Place 4 facedown cards from the Dungeon Deck on all 4 sides of the Entrance.</div></li>
+    <li><b>H</b><div>Place 1 <strong>Altar Marker</strong> on the Entrance's altar symbol.</div></li>
+    <li><b>I</b><div>Set aside <span class="n" data-n="h">4</span> more Altar Markers. Return the rest.</div></li>
+  </ol>
+  <div class="gridfig">
+    <svg viewBox="0 0 140 140" role="img" aria-label="7x7 grid with the Entrance in the center and four facedown cards around it">
+      <g fill="none" stroke="#3c3750" stroke-width="1">
+        <path d="M0 .5h140M0 20.5h140M0 40.5h140M0 60.5h140M0 80.5h140M0 100.5h140M0 120.5h140M0 139.5h140M.5 0v140M20.5 0v140M40.5 0v140M60.5 0v140M80.5 0v140M100.5 0v140M120.5 0v140M139.5 0v140"/>
+      </g>
+      <rect x="62" y="62" width="17" height="17" rx="2" fill="#f5b942"/>
+      <g fill="#7d8aa3"><rect x="62" y="42" width="17" height="17" rx="2"/><rect x="62" y="82" width="17" height="17" rx="2"/><rect x="42" y="62" width="17" height="17" rx="2"/><rect x="82" y="62" width="17" height="17" rx="2"/></g>
+    </svg>
+    <p><strong>Dungeon Size Limit:</strong> no card more than 3 cards from the Entrance in any direction (a 7x7 grid).</p>
+  </div>
+
+  <div class="phase">Torch Mat, Enemies, Boss <a class="art" href="https://rules.dized.com/game/VzImXT1sQNqDAgP77qiKeA/dvMGpHRcQjifdhJh44-nSw/torch-mat-appendix" target="_blank" rel="noopener">View Torch Mat</a></div>
+  <ol class="steps">
+    <li><b>J</b><div><strong>Torch Mat</strong> outside the grid, <strong>Act 1</strong> side up.</div></li>
+    <li><b>K</b><div><strong>Torch Marker</strong> on the <span class="n" data-n="h">4</span> space at the top of the track.</div></li>
+    <li><b>L</b><div>Shuffle <strong>Goblin</strong> and <strong>Minion</strong> Cards into 2 facedown decks.</div></li>
+    <li><b>M</b><div><strong>4 Goblin Tokens</strong> beside their numbers on the Torch Mat.</div></li>
+    <li><b>N</b><div><span class="n" data-n="h">4</span> <strong>Enemy Health Markers</strong> near the Minion deck.</div></li>
+    <li><b>O</b><div>Draw 1 <strong>Boss Mat</strong> unseen, <strong>Act 1</strong> side up. Return the others unseen.</div></li>
+    <li><b>P</b><div><strong>Boss Token</strong> beside the Boss Mat.</div></li>
+  </ol>
+
+  <div class="phase">Loot, Spells, Heroes</div>
+  <ol class="steps">
+    <li><b>Q</b><div>Shuffle <strong>Loot</strong> and <strong>Spell</strong> decks. Leave room for a discard row beside each.</div></li>
+    <li><b>R</b><div>Each player takes a <strong>Hero Mat</strong>.</div></li>
+    <li><b>S</b><div>All Hero miniatures start on the <strong>Entrance</strong>.</div></li>
+    <li><b>T</b><div>Health and Focus Markers on the highest spaces of each track.</div></li>
+    <li><b>U</b><div><strong>7 Disarm Markers</strong> within reach.</div></li>
+    <li><b>V</b><div>The youngest player takes the <strong>3 Hero Dice</strong> and <strong>Enemy Die</strong> and goes first.</div></li>
+  </ol>
+</div>
+</section>
+
+<!-- ================= TURN ================= -->
+<section id="turn">
+<div class="wrap">
+  <h2>On Your Turn</h2>
+  <p>In any order, all optional:</p>
+  <div class="flow">
+    <div class="mv"><b>Move</b>Up to your Speed. A Heroic Action ends movement.</div>
+    <div class="ha"><b>One Heroic Action</b>Rest, Search, Disarm, Cast a Spell, or Attack.</div>
+    <div class="fa"><b>Any Free Actions</b>Anytime on your turn, even mid-move.</div>
+    <div class="end"><b>End of Turn</b>Torch <strong>must</strong> move down 1. Resolve its space.</div>
+  </div>
+  <ul class="attrs">
+    <li><svg aria-hidden="true"><use href="#i-hp"/></svg><div><strong>Health:</strong> below 1, you fall <a href="#combat-unconscious">unconscious</a>.</div></li>
+    <li><svg aria-hidden="true"><use href="#i-fo"/></svg><div><strong>Focus:</strong> pays for abilities and die changes. Zero has no penalty.</div></li>
+    <li><svg aria-hidden="true"><use href="#i-sp"/></svg><div><strong>Speed:</strong> max rooms you may move into.</div></li>
+    <li><svg aria-hidden="true"><use href="#i-df"/></svg><div><strong>Defense:</strong> damage negated from a Counter-Attack.</div></li>
+  </ul>
+  <p><span class="sk s">Strength</span> <span class="sk a">Agility</span> <span class="sk i">Intellect</span> = Hero Dice rolled. Never more than 3, never fewer than 1.</p>
+</div>
+</section>
+
+<!-- ================= MOVE ================= -->
+<section id="move">
+<div class="wrap">
+  <h2>Move</h2>
+  <p>Spend 1 Speed per room entered, along <strong>pathways</strong> (connected corridors).</p>
+  <ul>
+    <li><strong>Enemies:</strong> entering their room ends your movement, unless you have <em>Stealth</em>.</li>
+    <li><strong>Heroes:</strong> never block movement. Any number of Heroes and enemies may share a room.</li>
+    <li><strong>Traps:</strong> evasion check on every entry unless disarmed. See <a href="#traps">Traps</a>.</li>
+  </ul>
+  <h3>Revealing New Rooms</h3>
+  <ol class="seq">
+    <li>Spend 1 Speed to <strong>flip</strong> an adjacent facedown card.</li>
+    <li><strong>Rotate</strong> it so a pathway connects to your room.</li>
+    <li>Place facedown cards at every <strong>open corridor</strong> leading to an empty grid space (skip if the deck is empty).</li>
+    <li>You <em>must</em> move in (unless a Room-icon ability says otherwise).</li>
+    <li><strong>Check for Danger.</strong> Then keep moving if able.</li>
+  </ol>
+  <h3>Check for Danger</h3>
+  <div class="tscroll"><table>
+    <tr><td><strong style="color:var(--gob)">Goblin Encounter</strong></td><td><strong>Take 1 damage</strong> (if in the room); movement ends. Draw a Goblin Card into the lowest empty slot; place its token here. <strong>A fifth Goblin = you lose.</strong></td></tr>
+    <tr><td><strong style="color:var(--min)">Minion Encounter</strong></td><td><strong>Take 2 damage</strong> (if in the room); movement ends. Draw a Minion Card (right of the Torch Mat), add an Enemy Health Marker at its top, place its token here.</td></tr>
+    <tr><td><strong style="color:var(--boss)">Trap</strong></td><td>Evasion check on <strong>each</strong> entry. See <a href="#traps">Traps</a>.</td></tr>
+  </table></div>
+</div>
+</section>
+
+<!-- ================= SKILL CHECKS ================= -->
+<section id="checks">
+<div class="wrap">
+  <h2>Skill Checks</h2>
+  <p>Roll your Skill's dice and <strong>meet or exceed</strong> the number. Green check = success, red X = failure (none listed, no effect). A cost on the success box <strong>must</strong> be paid to get the effect.</p>
+  <div class="dice" aria-label="Hero Die faces">
+    <div class="die">1<small style="color:#7fd38b">plus</small><small class="fo">focus</small></div>
+    <div class="die">2<small style="color:#7fd38b">plus</small><small class="fo">focus</small></div>
+    <div class="die">3<small class="fo">focus</small></div>
+    <div class="die">4<small class="fo">focus</small></div>
+    <div class="die">5<small>&nbsp;</small></div>
+    <div class="die">6<small class="hp">health</small></div>
+  </div>
+  <ol class="seq">
+    <li><strong>Select one die</strong> as the result.</li>
+    <li><strong>Plus dice</strong> (1, 2) may add to the result die, or be the result.</li>
+    <li>Apply <strong>modifiers</strong>.</li>
+    <li>Optional Free Action: <strong>2 Focus</strong> changes one Hero Die by 1 (no 6&#8596;1, not the Enemy Die).</li>
+    <li><strong>On success only:</strong> unused dice give +1 Focus per Focus icon, +1 Health per 6.</li>
+  </ol>
+  <p><em>For example: roll 4, 3, +1. Use 4 +1 = 5. Success, and the unused 3 gives 1 Focus.</em></p>
+</div>
+</section>
+
+<!-- ================= HEROIC ================= -->
+<section id="heroic">
+<div class="wrap">
+  <h2>Heroic Actions</h2>
+  <p>One per turn. Ends your movement.</p>
+  <div class="act"><h4><span class="pl h">Heroic</span> Rest</h4><p><strong>+3 Health, +5 Focus.</strong> Mandatory if you start unconscious.</p></div>
+  <div class="act"><h4><span class="pl h">Heroic</span> Search a Room</h4><p>Use the room's feature (check or cost). <strong>Not with enemies present</strong> unless another conscious Hero is there.</p></div>
+  <div class="act"><h4><span class="pl h">Heroic</span> Disarm a Trap</h4><p>After the evasion check, roll the right-side check. See <a href="#traps">Traps</a>.</p></div>
+  <div class="act"><h4><span class="pl h">Heroic</span> Cast a Spell</h4><p>Target in range, meet the check. Focus from unused dice comes <strong>first</strong> and can pay the cost. <strong>Spell damage ignores Defense.</strong></p></div>
+  <div class="act"><h4><span class="pl h">Heroic</span> Attack</h4>
+    <ul>
+      <li><strong>Melee:</strong> same room.</li>
+      <li><strong>Missile:</strong> another room, line-of-sight, in range.</li>
+      <li><strong>Spell:</strong> the spell's range.</li>
+    </ul>
+    <p>See <a href="#combat">Attack</a>.</p></div>
+  <h3>Range</h3>
+  <div class="tscroll"><table>
+    <tr><td><strong>Same Room</strong></td><td>Your room only.</td></tr>
+    <tr><td><strong>Line-of-Sight</strong></td><td>Straight line of pathways, within range. <strong>Never your room.</strong></td></tr>
+    <tr><td><strong>Any Path</strong></td><td>Along pathways within range, including your room.</td></tr>
+    <tr><td><strong>All</strong></td><td>Everyone within range along pathways, including your room.</td></tr>
+  </table></div>
+  <p><em>Note: Heroes and enemies never block attacks.</em></p>
+</div>
+</section>
+
+<!-- ================= COMBAT ================= -->
+<section id="combat">
+<div class="wrap">
+  <h2>Attack</h2>
+  <ol class="seq">
+    <li>Target in <strong>same room or line-of-sight</strong>: also roll the <strong>Enemy Die</strong>.</li>
+    <li>Melee/Missile: result must be <strong>higher than</strong> Defense. Damage = result − Defense. Equal = miss.</li>
+    <li>Survivor in same room or line-of-sight <strong>Counter-Attacks</strong>.</li>
+  </ol>
+  <p><em>For example: Minotaur Defense 4, +2 vs Melee = 6. You roll 8: 2 damage.</em></p>
+  <h3>Counter-Attack</h3>
+  <div class="dice" aria-label="Enemy Die faces">
+    <div class="die red">🔥<small>torch</small></div>
+    <div class="die red">🛡<small>shield</small></div>
+    <div class="die red">2</div><div class="die red">3</div><div class="die red">4</div><div class="die red">5</div>
+  </div>
+  <div class="tscroll"><table>
+    <tr><td><strong>2–5</strong></td><td>Face + enemy modifier. You take the amount above your Defense.</td></tr>
+    <tr><td><strong>Shield</strong></td><td>Equals your Defense: take damage equal to the modifier.</td></tr>
+    <tr><td><strong>Torch</strong></td><td>Miss, but the torch moves down 1.</td></tr>
+  </table></div>
+  <div class="tscroll"><table>
+    <tr><td><strong style="color:var(--gob)">Goblins</strong></td><td>+ number of Goblins in the dungeon.</td></tr>
+    <tr><td><strong style="color:var(--min)">Minions</strong></td><td>Melee value or Missile/Spell value.</td></tr>
+    <tr><td><strong style="color:var(--boss)">Bosses</strong></td><td>Melee, Missile, Spell values. "Lose Focus/Health" applies after your attack.</td></tr>
+  </table></div>
+  <ul>
+    <li>Spell Attack without line-of-sight: <strong>no Counter-Attack</strong>.</li>
+    <li>Several targets: only one counters, you choose.</li>
+  </ul>
+  <h3>Kill Enemies</h3>
+  <ul>
+    <li><strong style="color:var(--gob)">Goblin</strong> (1 Health): token to the Torch Mat, card discarded. Take its reward ("/" = choose one, "+" = both).</li>
+    <li><strong style="color:var(--min)">Minion:</strong> token and card to the box. Its Health Marker goes on a Boss Mat heart. Take 1 Loot or Spell <strong>twice</strong>. Torch <strong>up 6</strong> (not past start).</li>
+  </ul>
+  <h3 id="combat-unconscious">Unconscious Hero</h3>
+  <p>At 0 Health your turn ends; lay your miniature down. Next turn you <strong>must Rest</strong>, may then move, and <strong>no Free Actions</strong>. Healing from another Hero wakes you immediately.</p>
+</div>
+</section>
+
+<!-- ================= FREE ================= -->
+<section id="free">
+<div class="wrap">
+  <h2>Free Actions</h2>
+  <p>Any number, anytime <strong>on your turn only</strong>, even mid-move or after rolling.</p>
+  <div class="act fr"><h4><span class="pl f">Free</span> Modify a Hero Die</h4><p>2 Focus: change a Hero Die by 1.</p></div>
+  <div class="act fr"><h4><span class="pl f">Free</span> Teleport</h4><p>2 Focus: to any revealed room, then keep moving. Not if an enemy stopped you. Lair Door yes, Boss Mat no.</p></div>
+  <div class="act fr"><h4><span class="pl f">Free</span> Reveal Adjacent Rooms</h4><p>Act 1. Torch down 1: reveal all adjacent unexplored rooms. Enemies placed, <strong>no encounter damage.</strong></p></div>
+  <div class="act fr"><h4><span class="pl f">Free</span> Research</h4><p>4 Focus: discover a Spell. Unusable while a Hand Loot covers it.</p></div>
+  <div class="act fr"><h4><span class="pl f">Free</span> Enter the Boss's Lair</h4><p>On the Lair Door once all Minions are dead. Still costs 1 Speed. See <a href="#boss">Act 2</a>.</p></div>
+  <div class="act fr"><h4><span class="pl f">Free</span> Taunt the Boss</h4><p>Act 2. 2 Focus: Boss moves up to its Speed toward you. Repeatable.</p></div>
+  <div class="act fr"><h4><span class="pl f">Free</span> Discard</h4><p>Any Loot or Spell to its discard row. No trading.</p></div>
+  <div class="act" style="border-left-color:#5a5470"><h4><span class="pl t">Trigger</span> Action plaque + colon</h4><p>Usable only while performing that action.</p></div>
+</div>
+</section>
+
+<!-- ================= TRAPS ================= -->
+<section id="traps">
+<div class="wrap">
+  <h2>Traps</h2>
+  <p>Left side: <strong>evasion</strong>. Right side: <strong>disarm</strong>. <a class="art" href="https://rules.dized.com/game/VzImXT1sQNqDAgP77qiKeA/SWWBPpKiT3maX7YCijnquA/room-card-appendix" target="_blank" rel="noopener">View Trap Cards</a></p>
+  <ol class="seq">
+    <li><strong>Every entry</strong> without a Disarm Marker: roll the evasion check.</li>
+    <li>Fail: take the damage in the X box. Success: no effect.</li>
+    <li>Either way: <strong>keep moving</strong>, or <strong>Disarm</strong> (Heroic Action).</li>
+    <li>Disarm needs no enemies present, unless another conscious Hero is there.</li>
+    <li><strong>Disarm success:</strong> place a Disarm Marker, <strong>discover 1 Loot or Spell</strong>. Ignored for the rest of the game. <strong>Fail:</strong> no effect.</li>
+  </ol>
+  <p><em>Note: Moonblade's Lockpick (2 Focus) is a Free Action Disarm. Enemies ignore traps.</em></p>
+  <div class="tscroll"><table>
+    <tr><th>Trap</th><th>Evade</th><th>Fail</th><th>Disarm</th></tr>
+    <tr><td>Buzzsaw</td><td>Any 6</td><td>3 dmg</td><td><span class="sk s">STR 5</span></td></tr>
+    <tr><td>Fire Vortex</td><td>Any 6</td><td>3 dmg</td><td><span class="sk i">INT 5</span></td></tr>
+    <tr><td>Spike Pit</td><td>Any 6</td><td>3 dmg</td><td><span class="sk a">AGI 5</span></td></tr>
+    <tr><td>Bridge of Doom</td><td>Any 7</td><td>2 dmg</td><td><span class="sk a">AGI 6</span></td></tr>
+    <tr><td>Spiked Log</td><td>Any 7</td><td>2 dmg</td><td><span class="sk a">AGI 6</span></td></tr>
+    <tr><td>Shelby's Web</td><td>Any 7</td><td>2 dmg</td><td><span class="sk s">STR 6</span></td></tr>
+    <tr><td>Twisting Brambles</td><td>Any 7</td><td>2 dmg</td><td><span class="sk i">INT 6</span></td></tr>
+  </table></div>
+  <p><strong>Goblin Bunks:</strong> <span class="sk a">AGI 4</span> on entry. Success: pick up 1 Loot from the discard row. Fail: add a Goblin here, movement ends, <strong>no</strong> damage.</p>
+</div>
+</section>
+
+<!-- ================= TORCH ================= -->
+<section id="torch">
+<div class="wrap">
+  <h2>Torch Mat</h2>
+  <p>Torch reaches the skull: <strong>you lose.</strong> It never moves up past its start (<span data-n="h">4</span>). Moving <strong>down</strong> onto or <strong>past</strong> an icon triggers it:</p>
+  <div class="act" style="border-left-color:var(--gob)"><h4>Add a Goblin to the Entrance</h4><p>Lowest-numbered Goblin Token to the Entrance; draw its Goblin Card. <strong>Fifth Goblin = you lose.</strong></p></div>
+  <div class="act" style="border-left-color:var(--boss)"><h4>Trigger Enemy Actions</h4>
+    <ol class="seq">
+      <li><strong>Goblins</strong>, 1 to 4.</li>
+      <li><strong>Minions</strong> left to right (Act 1), or <strong>the Boss</strong> (Act 2).</li>
+    </ol>
+    <p>Hits all conscious Heroes in range. <strong>Defense and abilities do not block it.</strong></p></div>
+  <div class="tscroll"><table>
+    <tr><td><strong>Move <em>or</em> Attack</strong></td><td>Hero in range: attack, no move. Otherwise: move, no attack.</td></tr>
+    <tr><td><strong>Move <em>and</em> Attack</strong></td><td>Nearest Hero in its room: attack. Otherwise: move, then attack.</td></tr>
+  </table></div>
+  <h3>Enemy Movement</h3>
+  <p>Toward the closest conscious Hero by the shortest pathway, up to its Speed, stopping in the first room with a conscious Hero. Ignores traps and enemies, not walls. Active player breaks ties.</p>
+</div>
+</section>
+
+<!-- ================= BOSS ================= -->
+<section id="boss">
+<div class="wrap">
+  <h2>Act 2: The Boss</h2>
+  <p>Lair Door revealed and all <span data-n="h">4</span> Minions dead: a Hero on the Lair Door may <em>Enter the Boss's Lair</em>. <a class="art" href="https://rules.dized.com/game/VzImXT1sQNqDAgP77qiKeA/JH2HoxLVTqC2xVOl3L77Yg/boss-mat-appendix" target="_blank" rel="noopener">View Boss Mats</a></p>
+  <ol class="seq">
+    <li>Flip the <strong>Boss Mat</strong> to Act 2. Stack the <span data-n="h">4</span> Health Markers on <strong>8</strong>.</li>
+    <li><strong>Boss Token</strong> on the Boss Mat.</li>
+    <li>Flip the <strong>Torch Mat</strong> to Act 2; torch to the top space for <span data-n="h">4</span>. Keep Goblins aligned.</li>
+    <li><strong>Altar Marker</strong> on every Minion Encounter Card.</li>
+  </ol>
+  <h3>The Boss Mat</h3>
+  <ul>
+    <li>One large room: <strong>same room and line-of-sight</strong> for everyone on it.</li>
+    <li>1 Speed from the Lair Door onto the <strong>entrance</strong> space, then move between Hero Spaces.</li>
+    <li>No sharing a space at the end of movement.</li>
+    <li>Space effects trigger when you <strong>end</strong> movement there, not when starting a turn there.</li>
+    <li>Goblins can enter (center of the mat) and attack all Heroes there.</li>
+  </ul>
+  <h3>Boss Health and Altars</h3>
+  <ul>
+    <li>Split damage freely across the Health Markers. All at 0 = <strong>victory</strong>.</li>
+    <li>Markers can't reach or pass an <strong>uncovered Altar space</strong>; excess damage is lost.</li>
+    <li>Boss enters a room with an Altar Marker: move it to the highest uncovered Altar space.</li>
+    <li><strong>Taunt the Boss</strong> to pull it to altars. With no Heroes on the Boss Mat, its Enemy Action moves it out to the nearest Hero.</li>
+  </ul>
+  <h3>Lair Rules</h3>
+  <ul>
+    <li>On the Boss Mat: Attack, Cast a Spell, or Rest.</li>
+    <li>Boss in Lair: hits only Heroes on the Boss Mat; attackable only from the Boss Mat.</li>
+    <li>Boss in dungeon: attack it like any enemy.</li>
+    <li><strong>Boss Torch:</strong> torch down 1 + its Torch effect. Resolve the Torch effect before any Enemy Action it triggers.</li>
+    <li>Enemy Actions: Goblins first, then the Boss.</li>
+  </ul>
+</div>
+</section>
+
+<!-- ================= LOOT ================= -->
+<section id="loot">
+<div class="wrap">
+  <h2>Loot and Spells</h2>
+  <ul>
+    <li><strong>Discover</strong> (full-color icon): draw from the deck (keep or discard), or take one from the discard row.</li>
+    <li><strong>Pick Up</strong> (gray icon, green arrow): discard row only.</li>
+    <li>Equip only when discovering or picking up.</li>
+  </ul>
+  <div class="tscroll"><table>
+    <tr><td><strong>Hand</strong></td><td>2. Covers the mat's Hand slot until discarded.</td></tr>
+    <tr><td><strong>Garb</strong></td><td>1</td></tr>
+    <tr><td><strong>Trinket</strong></td><td>2</td></tr>
+    <tr><td><strong>Spell</strong></td><td>2</td></tr>
+  </table></div>
+  <p><strong>Legendary Sets:</strong> bonus at 2, 3 and 4 pieces equipped. <a class="art" href="https://rules.dized.com/game/VzImXT1sQNqDAgP77qiKeA/8ayGBdG_QHem_KlOcf-xIQ/legendary-sets-appendix" target="_blank" rel="noopener">View Legendary Sets</a></p>
+</div>
+</section>
+<!-- ================= HEROES ================= -->
+<section id="heroes">
+<div class="wrap wide">
+  <h2>Heroes</h2>
+  <p><svg width="17" height="17" style="vertical-align:-3px"><use href="#i-hp"/></svg> Max Health, <svg width="17" height="17" style="vertical-align:-3px"><use href="#i-fo"/></svg> Max Focus, <svg width="17" height="17" style="vertical-align:-3px"><use href="#i-sp"/></svg> Speed, <svg width="17" height="17" style="vertical-align:-3px"><use href="#i-df"/></svg> Defense. Pips = dice per Skill. <a class="art" href="https://rules.dized.com/game/VzImXT1sQNqDAgP77qiKeA/pCCndZNlQo2SXKxXxnOb0g/hero-mat-appendix" target="_blank" rel="noopener">View all Hero Mats</a></p>
+  <div class="tools"><input id="hq" type="search" placeholder="Filter Heroes" aria-label="Filter Heroes"></div>
+  <div class="cgrid" id="heroGrid"></div>
+</div>
+</section>
+
+<!-- ================= CARDS ================= -->
+<section id="cards">
+<div class="wrap wide">
+  <h2>Card Appendix</h2>
+  <p>"View card" opens the official appendix page with the card art.</p>
+  <div class="tools">
+    <input id="cq" type="search" placeholder="Filter cards" aria-label="Filter cards">
+    <div class="chips" id="chips" role="group" aria-label="Card type">
+      <button type="button" data-t="all" aria-pressed="true">All</button>
+      <button type="button" data-t="room" aria-pressed="false">Rooms</button>
+      <button type="button" data-t="loot" aria-pressed="false">Loot</button>
+      <button type="button" data-t="set" aria-pressed="false">Sets</button>
+      <button type="button" data-t="spell" aria-pressed="false">Spells</button>
+      <button type="button" data-t="gob" aria-pressed="false">Goblins</button>
+      <button type="button" data-t="min" aria-pressed="false">Minions</button>
+      <button type="button" data-t="boss" aria-pressed="false">Bosses</button>
+    </div>
+  </div>
+  <div id="cardWrap"></div>
+  <p id="noHits" class="dim hidden">No cards match.</p>
+</div>
+</section>
+
+<footer>
+<div class="wrap">
+  <p>Adapted from the official Dized rulebook and card appendix for <em>Tiny Epic Dungeons</em> (Gamelyn Games). Unofficial fan reference; the printed rules take precedence.</p>
+</div>
+</footer>
+<script>
+(function(){
+"use strict";
+var DZ="https://rules.dized.com/game/VzImXT1sQNqDAgP77qiKeA/";
+var ART={hero:DZ+"pCCndZNlQo2SXKxXxnOb0g/hero-mat-appendix",room:DZ+"SWWBPpKiT3maX7YCijnquA/room-card-appendix",
+ loot:DZ+"jk4Muzn2RmSepaX8vl-ugA/loot-card-appendix",set:DZ+"8ayGBdG_QHem_KlOcf-xIQ/legendary-sets-appendix",
+ spell:DZ+"GN0krrsxRTSccL1ytJiB7g/spell-card-appendix",gob:DZ+"xk_OqfRTTNK6Rb9cbekxxQ/goblin-card-appendix",
+ min:DZ+"7hZtnQ_XSwGoWQ07B82cSg/minion-card-appendix",boss:DZ+"JH2HoxLVTqC2xVOl3L77Yg/boss-mat-appendix"};
+var ARTLBL={hero:"View Hero Mat",room:"View card",loot:"View card",set:"View card",spell:"View card",gob:"View card",min:"View card",boss:"View Boss Mat"};
+function art(k){return '<a class="art" href="'+ART[k]+'" target="_blank" rel="noopener">'+ARTLBL[k]+'</a>'}
+
+/* ---------- Hero count ---------- */
+var DECKA={2:9,3:7,4:5};
+function setHeroes(n){
+  n=+n; var v={h:n,deckA:DECKA[n],roomB:3*n,totB:4*n}; v.total=v.deckA+v.totB+4;
+  document.querySelectorAll("[data-n]").forEach(function(el){el.textContent=v[el.getAttribute("data-n")]});
+  document.querySelectorAll("#seg button").forEach(function(b){b.setAttribute("aria-pressed",String(+b.dataset.v===n))});
+  try{localStorage.setItem("ted-heroes",n)}catch(e){}
+}
+document.getElementById("seg").addEventListener("click",function(e){var b=e.target.closest("button");if(b)setHeroes(b.dataset.v)});
+var saved=4;try{saved=+localStorage.getItem("ted-heroes")||4}catch(e){}
+setHeroes([2,3,4].indexOf(saved)>-1?saved:4);
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+var SK={S:'<span class="sk s">Strength</span>',A:'<span class="sk a">Agility</span>',I:'<span class="sk i">Intellect</span>',X:'<span class="sk x">any Skill</span>'};
+function fmt(s){return s.replace(/\{(S|A|I|X)\}/g,function(_,k){return SK[k]})}
+function ico(id,n,l){return '<span class="stat" title="'+l+'"><svg aria-hidden="true"><use href="#i-'+id+'"/></svg>'+n+'<span class="vh"> '+l+'</span></span>'}
+function pips(n){var o='<span class="pips" aria-label="'+n+' dice">';for(var i=1;i<=3;i++)o+='<i class="'+(i<=n?"on":"")+'"></i>';return o+'</span>'}
+var PL={h:'<span class="pl h">Heroic</span>',f:'<span class="pl f">Free Action</span>',t:'<span class="pl t">Trigger</span>'};
+
+/* ---------- Heroes (appendix wording) ---------- */
+var HEROES=[
+ {n:"Ethairna",r:"Elf Sorceress",hp:6,fo:8,sp:4,df:3,s:1,a:2,i:3,ab:[
+  ["h","Seeking Bolt","Perform an {I} check of 5. If successful, spend 2 Focus and deal 1 damage to a target within 4 rooms along any path."],
+  ["h","Dagger","Perform a Melee Attack using {S} and subtract 1 from your die result.",1],
+  ["f","Research","Spend 4 Focus to discover a Spell from the deck or from the discard row.",1]]},
+ {n:"Gerrund the Blue",r:"Ancient Wizard",hp:5,fo:8,sp:3,df:4,s:1,a:2,i:3,ab:[
+  ["h","Magic Arrow","Perform an {I} check of 6. If successful, spend 2 Focus and deal 2 damage to a target within 2 rooms along any path."],
+  ["h","Dagger","Perform a Melee Attack using {S} and subtract 1 from your die result.",1],
+  ["f","Research","Spend 4 Focus to discover a Spell from the deck or from the discard row.",1]]},
+ {n:"Grok U'll",r:"Half-Orc Barbarian",hp:8,fo:4,sp:3,df:2,s:3,a:2,i:1,ab:[
+  ["t","Battle Rage","Whenever you perform a Melee or Missile Attack, you may spend 3 Focus to add 2 to your die result."],
+  ["h","Axe","Perform a Melee Attack using {S} and add 1 to your die result.",1],
+  ["f","Sprint","Spend 1 Focus to increase your Speed by 1 for the turn."]]},
+ {n:"Moonblade",r:"Wood Elf Rogue",hp:6,fo:5,sp:5,df:3,s:2,a:3,i:1,ab:[
+  ["h","Shadow Walk","Perform an {A} check of 6. If successful, spend 3 Focus to move up to your Speed, ignoring enemies, and deal 1 damage to all targets in the room where your movement ends."],
+  ["h","Dagger","Perform a Melee Attack using {S} and subtract 1 from your die result.",1],
+  ["f","Lockpick","Spend 2 Focus to perform a Disarm a Trap action."]]},
+ {n:"Sir Lanon",r:"Human Paladin",hp:8,fo:5,sp:3,df:5,s:3,a:1,i:2,ab:[
+  ["h","Divine Might","Perform an {I} check of 4. If successful, spend 2 Focus to perform a Melee Attack and add 2 to your die result."],
+  ["h","Hammer","Perform a Melee Attack using {S}.",1],
+  ["f","Healing Hands","Spend 2 Focus to heal 1 Hero within 1 room (can be yourself) 2 Health."]]},
+ {n:"Thordin Firebraid",r:"Dwarf Fighter",hp:7,fo:5,sp:3,df:4,s:3,a:2,i:1,ab:[
+  ["t","Stone Stance","While performing a Melee Attack, you may spend 2 Focus to increase your Defense by 2 (may do this after the Enemy Die roll)."],
+  ["h","Hammer","Perform a Melee Attack using {S}.",1],
+  ["f","Shield Bash","Spend 5 Focus to instantly kill 1 Goblin in your room."]]},
+ {n:"Uliessa",r:"Dwarf Cleric",hp:6,fo:7,sp:4,df:5,s:2,a:1,i:3,ab:[
+  ["t","Heal","Whenever you Cast a Spell, you may also spend 2 Focus to heal 1 Hero up to 3 rooms away (can be yourself) 4 Health."],
+  ["h","Hammer","Perform a Melee Attack using {S}.",1],
+  ["f","Research","Spend 4 Focus to discover a Spell from the deck or from the discard row.",1]]},
+ {n:"Wyn Keleas",r:"Elf Ranger",hp:7,fo:5,sp:4,df:3,s:2,a:3,i:1,ab:[
+  ["f","Stealth","Spend 2 Focus to move through enemies (instead of stopping)."],
+  ["h","Dagger","Perform a Melee Attack using {S} and subtract 1 from your die result.",1],
+  ["h","Bow","Perform a Missile Attack using {A}, targeting an enemy up to 2 rooms away in a straight path (not the same room), and subtract 1 from your die result.",1]]}
+];
+document.getElementById("heroGrid").innerHTML=HEROES.map(function(h){
+  var ab=h.ab.map(function(a){return '<div class="ab">'+PL[a[0]]+(a[3]?' <span class="pl hand">Hand slot</span>':'')+' <b>'+esc(a[1])+'</b><br>'+fmt(esc(a[2]))+'</div>'}).join("");
+  return '<article class="card hero" data-q="'+esc((h.n+" "+h.r+" "+h.ab.map(function(a){return a[1]+" "+a[2]}).join(" ")).replace(/\{.\}/g,"").toLowerCase())+'">'+
+   '<h4>'+esc(h.n)+'<em>'+esc(h.r)+'</em></h4>'+
+   '<div class="stats">'+ico("hp",h.hp,"Max Health")+ico("fo",h.fo,"Max Focus")+ico("sp",h.sp,"Speed")+ico("df",h.df,"Defense")+'</div>'+
+   '<div class="skills"><span style="color:var(--str)">Strength'+pips(h.s)+'</span><span style="color:var(--agi)">Agility'+pips(h.a)+'</span><span style="color:var(--int)">Intellect'+pips(h.i)+'</span></div>'+ab+art("hero")+'</article>';
+}).join("");
+function filterHeroes(){var q=document.getElementById("hq").value.trim().toLowerCase();
+  document.querySelectorAll("#heroes .card").forEach(function(c){c.classList.toggle("hidden",!!q&&c.dataset.q.indexOf(q)<0)});}
+document.getElementById("hq").addEventListener("input",filterHeroes);
+
+/* ---------- Card appendix data (appendix wording) ---------- */
+var C=[];
+function add(t,g,o){o.t=t;o.g=g;C.push(o)}
+[
+ ["Entrance","Entrance","Heroes start the game here. Place 1 Altar Marker on this card at the beginning of the game."],
+ ["Boss's Lair Door","Free Action","Once all Minions are killed, spend 1 Speed to enter the Boss's Lair (revealing the facedown Boss Mat if needed)."],
+ ["Goblin Encounters","Encounter (applies to multiple rooms)","Place 1 Goblin in this room. If this room was revealed by you moving into it, immediately take 1 damage."],
+ ["Minion Encounters","Encounter (applies to multiple rooms)","Place 1 Minion in this room. If this room was revealed by you moving into it, immediately take 2 damage. At the start of the Final Battle, place 1 Altar Marker on this card."],
+ ["Arcane Altar","Search a Room","Perform an {I} check of 5. If successful, spend 4 Focus to move the torch 2 spaces up the torch track."],
+ ["Graveyard","Search a Room","Perform a check of 7 using {X}. If successful, move the torch up 1 space and pick up 1 Loot from the discard row."],
+ ["Jeweled Chest","Search a Room","Perform an {A} check of 5. If successful, pick up 1 Loot/Spell from the discard row."],
+ ["Locked Chest","Search a Room","Perform a {S} check of 5. If successful, pick up 1 Loot/Spell from the discard row."],
+ ["Pharaoh's Tomb","Search a Room","Perform an {A} check of 5. If successful, pick up 1 Loot/Spell from the discard row."],
+ ["Vault","Search a Room","Perform an {I} check of 5. If successful, pick up 1 Loot/Spell from the discard row."],
+ ["Witch's Cauldron","Search a Room","Perform an {I} check of 5. If successful, gain 2 Focus and discover 1 Spell from the deck or the discard row. If failed, move the torch down 1 space."],
+ ["Armory","Free Action","Perform a check of 7 using {X}. If successful, pick up 1 Loot from the discard row. If failed, move the torch down 1 space."],
+ ["Feasthall","Free Action","Perform an {I} check of 4. If successful, spend 3 Focus and heal to max. If failed, lose 2 Health."],
+ ["Library","Free Action","Spend 4 Focus and discover a Spell from the deck or the discard row."],
+ ["Portal","Free Action","Spend 2 Focus to place your Hero in any revealed room in the dungeon. You cannot move onto the Boss Mat, and cannot teleport if an enemy has stopped your movement in this room."],
+ ["Hidden Stairwell","Free Action","Spend 2 Focus to place your Hero in any revealed room in the dungeon. You cannot move onto the Boss Mat, and cannot teleport if an enemy has stopped your movement in this room."],
+ ["Pulley Device","Free Action","Spend 4 Focus and kill a Goblin anywhere in the dungeon."],
+ ["Well","Free Action","Move the torch down 1 space on the torch track and heal to max Health."],
+ ["Goblin Bunks","Trigger Trap","When you move into this room you MUST perform an {A} check of 4. If successful, pick up 1 Loot from the discard row. If failed, add 1 Goblin to this room (your movement ends, but you do NOT take 1 damage)."],
+ ["Buzzsaw","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 6 using {X}. If you fail, take 3 damage. <b>Disarm Trap:</b> perform a {S} check of 5. If you succeed, discover a Loot/Spell."],
+ ["Fire Vortex","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 6 using {X}. If you fail, take 3 damage. <b>Disarm Trap:</b> perform an {I} check of 5. If you succeed, discover a Loot/Spell."],
+ ["Spike Pit","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 6 using {X}. If you fail, take 3 damage. <b>Disarm Trap:</b> perform an {A} check of 5. If you succeed, discover a Loot/Spell."],
+ ["Bridge of Doom","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 7 using {X}. If you fail, take 2 damage. <b>Disarm Trap:</b> perform an {A} check of 6. If you succeed, discover a Loot/Spell."],
+ ["Spiked Log of Impalement","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 7 using {X}. If you fail, take 2 damage. <b>Disarm Trap:</b> perform an {A} check of 6. If you succeed, discover a Loot/Spell."],
+ ["Shelby's Web","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 7 using {X}. If you fail, take 2 damage. <b>Disarm Trap:</b> perform a {S} check of 6. If you succeed, discover a Loot/Spell."],
+ ["Twisting Brambles","Trap","<b>Trigger Trap:</b> when you move into this room you MUST perform a check of 7 using {X}. If you fail, take 2 damage. <b>Disarm Trap:</b> perform an {I} check of 6. If you succeed, discover a Loot/Spell."]
+].forEach(function(r){add("room","Room Cards",{n:r[0],m:r[1],x:r[2],h:1})});
+
+[
+ ["Amethyst Figurine","Trinket","Anytime you perform an {I} check, roll 1 additional die (3 dice limit applies)."],
+ ["Jade Figurine","Trinket","Anytime you perform an {A} check, roll 1 additional die (3 dice limit applies)."],
+ ["Ruby Figurine","Trinket","Anytime you perform a {S} check, roll 1 additional die (3 dice limit applies)."],
+ ["Crossbow","Hand","Perform a Missile Attack using {A} at a target up to 3 rooms away in a straight path (not your room), and add 1 to your die total. Whenever you perform a Missile Attack, immediately gain 1 Focus."],
+ ["Hook Shot","Hand","Perform a Melee Attack using {S} and add 1 to your die result, OR perform a Missile Attack using {A} at a target 1 room away in a straight path and add 1 to your die result."],
+ ["Spiked Buckler","Hand","Whenever you perform a Melee Attack, your Defense is increased by 1, and add 1 to your die total if performing a {S} check for the attack."],
+ ["Sun Hammer","Hand","Perform a Melee Attack using {S} and add 1 to your die result. Whenever you perform a Melee Attack, immediately gain 1 Focus."],
+ ["Cursed Dragonscale","Garb","Your Defense is decreased by 1. Anytime you perform a {S}, {A}, or {I} check, add 1 to your die result."],
+ ["Elven Chain","Garb","Your Defense and Speed are both increased by 1."],
+ ["Violet Cape","Garb","Whenever you perform a Missile Attack or Cast a Spell, your Defense is increased by 1. Anytime you perform an {I} check, add 1 to your die result."]
+].forEach(function(r){add("loot","Loot Cards",{n:r[0],m:r[1],x:r[2]})});
+
+var SETS=[
+ ["Bear","Whenever you perform a Melee Attack, add (1/2/3) to your die total if you have (2/3/4) pieces of the set equipped.",[
+  ["Great Axe of the Bear","Hand","Perform a Melee Attack using {S} and add 2 to your result. Your Speed is decreased by 1."],
+  ["Studded Jerkin of the Bear","Garb","Whenever you perform a Melee Attack, your Defense is increased by 1."],
+  ["Throwing Axes of the Bear","Hand","Perform a Missile Attack using {S} at a target 2 rooms away in a straight path (not your room) and add 2 to your result."],
+  ["War Horn of the Bear","Trinket","<b>Free Action:</b> spend 2 Focus to move all enemies within 4 rooms up to 2 rooms each, with you controlling their movement."]]],
+ ["Lion","Whenever you perform a Melee Attack, heal (1/2/3) Health if you have (2/3/4) pieces of the set equipped.",[
+  ["Greaves of the Lion","Trinket","Your Speed is increased by 1."],
+  ["Long Sword of the Lion","Hand","Perform a Melee Attack using {S} and add 1 to your result. Whenever you perform a Melee Attack, you may spend 2 Focus to add 1 to your die result."],
+  ["Platemail of the Lion","Garb","Your Defense is increased by 1."],
+  ["Shield of the Lion","Hand","Whenever you perform a Melee Attack, your Defense is increased by 1, and you may reroll one of your Hero Dice (only once per attack)."]]],
+ ["Panther","Whenever you perform a Missile Attack, add (1/2/3) to your die result if you have (2/3/4) pieces of the set equipped.",[
+  ["Claw of the Panther","Hand","Perform a Melee Attack using {A} and add 1 to your die result."],
+  ["Cloak of the Panther","Garb","<b>Stealth:</b> while moving, you may move through enemies (instead of stopping)."],
+  ["Glove of the Panther","Trinket","Anytime you perform an {A} check, add 1 to your die result."],
+  ["Long Bow of the Panther","Hand","Perform a Missile Attack using {A} at a target up to 4 rooms away in a straight path, OR spend 3 Focus to perform a Missile Attack targeting all enemies within 1 room (including your own)."]]],
+ ["Phoenix","Whenever you Cast a Spell, immediately gain (1/2/3) Focus if you have (2/3/4) pieces of the set equipped.",[
+  ["Great Staff of the Phoenix","Hand","Perform a Missile Attack using {I} at a target up to 3 rooms away in a straight path (not your room)."],
+  ["Ring of the Phoenix","Trinket","When you Cast a Spell that deals damage, deal 1 additional damage to a target of the attack. If it targets multiple enemies, increase the damage to a single target of your choice."],
+  ["Robes of the Phoenix","Garb","<b>Free Action:</b> spend 2 Focus to place your Hero in any revealed room. You cannot teleport onto the Boss Mat, but may teleport away from it."],
+  ["Spell Tome of the Phoenix","Hand","Anytime you perform an {I} check, add 1 to your die result."]]]
+];
+SETS.forEach(function(s){
+  add("set","Legendary Sets",{n:"The Set of the "+s[0],m:"Set bonus",x:s[1],bonus:1});
+  s[2].forEach(function(p){add("set","Legendary Sets",{n:p[0],m:p[1],x:p[2]})});
+});
+
+[
+ ["Chain Lightning","Perform an {I} check of 6. If successful, spend 3 Focus to deal 1 damage to up to 2 different targets, each within 2 rooms of you along any path."],
+ ["Claw of Darkness","Perform an {I} check of 6. If successful, spend 4 Focus and deal 3 damage to a target up to 2 rooms away along any path. If unsuccessful, move the torch down 1 space."],
+ ["Conjurer's Gambit","Perform an {I} check of 7. If successful, spend 5 Focus and deal 4 damage to a target up to 3 rooms away along any path. If unsuccessful, add a Goblin to your room."],
+ ["Cloud of Death","Perform an {I} check of 6. If successful, spend 4 Focus and deal 2 damage to all enemies within 1 room of you."],
+ ["Dark Bargain","Perform an {I} check of 7. If successful, spend 4 Focus for all Heroes within 2 rooms (including yourself) to heal to their maximum Health. Additionally, add a Goblin to your room."],
+ ["Delver's Luck","Perform a check of 7 using {X}. If successful, spend 4 Focus and perform an additional action. If that action requires a Skill Check, add 3 to your die result."],
+ ["Dungeon Scry","Perform a check of 5 using {X}. If successful, spend 2 Focus and reveal an unexplored room anywhere on the map. You may then perform an additional movement OR an additional Heroic Action (1x this turn)."],
+ ["Eagle's Swiftness","Perform an {I} check of 3. If successful, spend 3 Focus to perform a Missile Attack with a weapon and add 3 to your die result for that attack."],
+ ["Elemental Charge","Perform a check of 5 using {X}. If successful, spend 2 Focus to move up to your Speed and deal 2 damage to all enemies in the room where your movement ends."],
+ ["Fireball","Perform an {I} check of 7. If successful, spend 6 Focus and deal 4 damage to a target up to 2 rooms away along any path."],
+ ["Giant's Strength","Perform an {I} check of 3. If successful, spend 3 Focus to perform a Melee Attack with a weapon and add 3 to your die result for that attack."],
+ ["Holy Abundance","Perform an {I} check of 5. If successful, spend 4 Focus for all Heroes within 4 rooms (including yourself) to heal 3 Health and gain 2 Focus. Heroes in your room (including you) discover a Loot or Spell from the discard row."],
+ ["Invisibility","Perform a check of 5 using {X}. If successful, spend 2 Focus to move up to your Speed, ignoring enemies and damage from Goblin and Minion Encounters. After your movement, you may perform 1 additional Heroic Action (1x this turn)."],
+ ["Tempest of Arrows","Perform an {I} check of 6. If successful, spend 5 Focus to deal 1 damage to all enemies within 1 room of you, and you may target a single enemy up to 3 rooms away along any path for 2 damage. A targeted enemy within 1 room takes both."]
+].forEach(function(r){add("spell","Spell Cards",{n:r[0],m:"Spell",x:r[1]})});
+
+add("gob","Goblin Cards",{n:"Goblin Counter-Attack",m:"All Goblins",x:"All Goblins counter all types of attacks with the Enemy Die result plus the number of Goblins in the dungeon (1 Goblin = +1, 2 Goblins = +2, etc.). Goblins have 1 Health.",bonus:1});
+[
+ ["Boomy Goblin","Speed 1, Defense 4","Discover 1 Loot OR 1 Spell.","If Boomy is within 2 rooms of a Hero, all Heroes within 2 rooms of Boomy's room lose 2 Health. If not, move Boomy 1 room toward the closest Hero."],
+ ["Pokey Goblin","Speed 3, Defense 6","Discover 1 Loot AND reveal one unexplored room anywhere in the dungeon.","If Pokey is within 1 room of a Hero, all Heroes within 1 room of Pokey's room lose 1 Health times the number of Goblins in the dungeon. If not, move Pokey 3 rooms toward the closest Hero."],
+ ["Shooty Goblin","Speed 2, Defense 5","Discover 1 Loot OR gain 5 Focus.","Shooty moves 2 rooms toward the closest Hero AND all Heroes within 2 rooms of where Shooty ends its movement lose 1 Health."],
+ ["Stabby Goblin","Speed 4, Defense 4","Discover 1 Loot OR gain 3 Health.","If Stabby is in the same room as a Hero, all Heroes in Stabby's room lose 1 Health times the number of Goblins in the dungeon, plus 1. If not, move Stabby up to 4 rooms toward the closest Hero."]
+].forEach(function(r){add("gob","Goblin Cards",{n:r[0],m:r[1],x:"<b>Reward:</b> "+esc(r[2]),y:"<b>Enemy Action:</b> "+esc(r[3]),raw:1})});
+
+[
+ ["Dire Serpent",6,3,5,"+4 to Enemy Die and Defense increases by 1.","+2 to Enemy Die.","Move 3 rooms toward the nearest Hero, then all Heroes in the same room as the Serpent lose 3 Health."],
+ ["Dungeon Crawler",7,2,5,"+3 to Enemy Die.","+2 to Enemy Die.","Move 2 rooms toward the nearest Hero, then all Heroes within 1 room of the Crawler lose 2 Health and 2 Focus."],
+ ["Minotaur",6,5,4,"+3 to Enemy Die and Defense increases by 2.","+1 to Enemy Die.","Move 5 rooms toward the nearest Hero, then all Heroes in the same room as the Minotaur lose 3 Health."],
+ ["Ogre",6,4,5,"+2 to Enemy Die and Defense increases by 2.","+2 to Enemy Die.","Move 4 rooms toward the nearest Hero, then all Heroes in the same room as the Ogre lose 2 Health."],
+ ["Ooze",8,2,4,"+3 to Enemy Die.","+1 to Enemy Die and Defense increases by 2.","Move 2 rooms toward the nearest Hero, then all Heroes within 1 room of the Ooze lose 1 Health and discard 1 Loot to the discard row if they are able."],
+ ["Skeleton",8,3,4,"+2 to Enemy Die.","+3 to Enemy Die.","Move 3 rooms toward the nearest Hero, then all Heroes in the same room as the Skeleton lose 2 Health and 3 Focus."],
+ ["Troglodyte",7,1,5,"+2 to Enemy Die.","+3 to Enemy Die.","Move 1 room toward the nearest Hero, then all Heroes within 1 room of the Troglodyte lose 2 Health and 2 Focus."],
+ ["Troll",7,4,4,"+3 to Enemy Die.","+2 to Enemy Die.","Move 4 rooms toward the nearest Hero, then all Heroes in the same room as the Troll lose 1 Health. Additionally, add a Goblin to the Troll's room."]
+].forEach(function(r){add("min","Minion Cards",{n:r[0],m:"Health "+r[1]+", Speed "+r[2]+", Defense "+r[3],
+  x:"<b>Melee Counter-Attack:</b> "+esc(r[4])+"<br><b>Missile/Spell Counter-Attack:</b> "+esc(r[5]),y:"<b>Enemy Action:</b> "+esc(r[6]),raw:1})});
+
+[
+ ["The Dragon","3","Speed 3, Defense 8","+4 to Enemy Die.","+3 to Enemy Die.","After casting, Hero loses 2 Focus.","Inferno","Move 3 rooms toward the nearest Hero, then all Heroes within 4 rooms of the Dragon lose 2 Health.","Scorch","All Heroes within 1 room of the Dragon lose 2 Health.",
+   ["Any Skill Check: add 3 to the die result.","Agility Check: add 2.","Strength Check: add 2.","Immediately lose 1 Health.","Lair Entrance: immediately lose 2 Health.","Immediately gain 2 Focus."]],
+ ["The Goblin King","2","Speed 1, Defense 6","+4 to Enemy Die.","+2 to Enemy Die.","+1 to Enemy Die.","Get Over 'Ere","Add a Goblin to the Entrance. Additionally, the Goblin King heals 2 Health (any 1 Health marker).","Give 'Em the Stick","All Heroes within 2 rooms of a Goblin lose 1 Health (resolve for each Goblin).",
+   ["Any Skill Check: add 2 to the die result.","Any Skill Check: add 1.","Immediately gain 1 Focus.","Immediately add a Goblin to the Entrance.","Lair Entrance: immediately add a Goblin to the Entrance.","Immediately gain 1 Focus."]],
+ ["The Gorgon","4","Speed 2, Defense 6","+4 to Enemy Die.","+3 to Enemy Die.","+2 to Enemy Die.","Choke Hold","Move 2 rooms toward the nearest Hero, then all Heroes within 3 rooms of the Gorgon lose 2 Health.","Stone Gaze","All Heroes within 3 rooms of the Gorgon lose 3 Focus. Additionally, the Gorgon heals 1 Health (any 1 Health marker).",
+   ["Agility Check: add 2 to the die result.","Intellect Check: add 2.","Immediately gain 2 Focus.","Strength Check: add 2.","Roll 1 less Hero Die on any Skill Check (cannot be 0).","Lair Entrance: roll 1 less Hero Die on any Skill Check (cannot be 0)."]],
+ ["The Hydra","2, 4, 6","Speed 2, Defense 6","+4 to Enemy Die.","+2 to Enemy Die.","+1 to Enemy Die.","Bite","Move 2 rooms toward the nearest Hero, then all Heroes within 1 room of the Hydra lose 2 Health.","Regrowth","The Hydra heals 2 Health (any 1 Health marker).",
+   ["Immediately gain MAX Health and Focus.","Immediately lose 1 Health.","Immediately lose 1 Health.","Hero may immediately move again.","Immediately lose 1 Health.","Lair Entrance: Strength, Agility, or Intellect Checks subtract 2 from the die result."]],
+ ["The Pharaoh","2, 4","Speed 2, Defense 7","+3 to Enemy Die.","+2 to Enemy Die.","After casting, Hero loses 2 Focus.","Plague","Move 2 rooms toward the nearest Hero, then all Heroes within 2 rooms of the Pharaoh lose 2 Health.","Sacrifice","All Heroes within 3 rooms of the Pharaoh must lose 3 Focus or discard one of their Spells from the game (if they do not have 3 Focus to lose, they must discard a Spell).",
+   ["Lair Entrance: immediately lose 2 Focus.","Immediately lose 1 Focus.","Intellect Check: add 2 to the die result.","Agility Check: add 2.","Strength Check: add 2.","Immediately gain 2 Focus."]],
+ ["The Seer","1, 4","Speed 3, Defense 6","+3 to Enemy Die.","+4 to Enemy Die.","After casting, Hero loses 3 Focus.","Mind Blade","Move 3 rooms toward the nearest Hero, then all Heroes within 1 room of the Seer lose 2 Health and 1 Focus.","Cosmic Shift","The Seer immediately moves to the Boss Mat (does nothing if already there). Additionally, the Seer heals 2 Health (any 1 Health marker).",
+   ["Lair Entrance: immediately lose 3 Focus.","Immediately lose 2 Focus.","Immediately gain 1 Focus.","Any Skill Check: add 1 to the die result.","Immediately gain 1 Focus.","Any Skill Check: add 2."]]
+].forEach(function(r){add("boss","Boss Mats",{n:r[0],m:"Altar Space(s): "+r[1]+". "+r[2],
+  x:"<b>Melee Counter-Attack:</b> "+esc(r[3])+"<br><b>Missile Counter-Attack:</b> "+esc(r[4])+"<br><b>Spell Counter-Attack:</b> "+esc(r[5])+
+    "<br><b>"+esc(r[6])+", Enemy Action:</b> "+esc(r[7])+"<br><b>"+esc(r[8])+", Torch Die Effect:</b> "+esc(r[9]),
+  y:"<b>Hero Space Effects (from left to right):</b><br>"+r[10].map(function(z){return "&bull; "+esc(z)}).join("<br>"),raw:1})});
+
+/* ---------- render cards ---------- */
+var COL={room:"var(--room)",loot:"var(--loot)",set:"var(--loot)",spell:"var(--spell)",gob:"var(--gob)",min:"var(--min)",boss:"var(--boss)",exp:"#6b6377"};
+var wrap=document.getElementById("cardWrap"),groups={},order=[];
+C.forEach(function(c){if(!groups[c.g]){groups[c.g]=[];order.push(c.g)}groups[c.g].push(c)});
+wrap.innerHTML=order.map(function(g){
+  var t=groups[g][0].t;
+  return '<div class="cgroup" data-grp="'+t+'"><h3>'+esc(g)+'</h3>'+art(t).replace(/>View [^<]+</,">View all<")+'</div><div class="cgrid" data-grp="'+t+'">'+
+  groups[g].map(function(c){
+    var x=c.raw?c.x:fmt(c.h?c.x:esc(c.x)), y=c.y||"";
+    var q=(c.n+" "+c.m+" "+c.x+" "+(c.y||"")).replace(/<[^>]+>|\{.\}|&bull;/g," ").toLowerCase();
+    return '<article class="card'+(c.unv?" unv":"")+'" style="--c:'+COL[c.t]+(c.bonus?';background:#2d2818':'')+'" data-t="'+c.t+'" data-q="'+esc(q)+'">'+
+      '<h4>'+esc(c.n)+'</h4><div class="meta">'+esc(c.m)+'</div><p>'+x+'</p>'+(y?'<p>'+y+'</p>':'')+art(c.t)+'</article>';
+  }).join("")+'</div>';
+}).join("");
+
+var curT="all",cq=document.getElementById("cq");
+function filterCards(){
+  var q=cq.value.trim().toLowerCase(),hits=0;
+  wrap.querySelectorAll(".card").forEach(function(c){
+    var ok=(curT==="all"||c.dataset.t===curT)&&(!q||c.dataset.q.indexOf(q)>-1);
+    c.classList.toggle("hidden",!ok); if(ok)hits++;
+  });
+  wrap.querySelectorAll(".cgrid").forEach(function(g){
+    var any=g.querySelector(".card:not(.hidden)");
+    g.classList.toggle("hidden",!any); g.previousElementSibling.classList.toggle("hidden",!any);
+  });
+  document.getElementById("noHits").classList.toggle("hidden",hits>0);
+}
+function setChip(t){curT=t;document.querySelectorAll("#chips button").forEach(function(x){x.setAttribute("aria-pressed",String(x.dataset.t===t))});filterCards()}
+cq.addEventListener("input",filterCards);
+document.getElementById("chips").addEventListener("click",function(e){var b=e.target.closest("button");if(b)setChip(b.dataset.t)});
+
+/* ---------- page-wide search ---------- */
+var UNITS=".lose > div, ol.steps > li, .flow > div, .attrs li, ol.seq > li, .act, .tscroll tr, .note, .card, section h3, section p, section .wrap > ul > li, .act li";
+var IDX=[];
+function buildIndex(){
+  IDX=[];var n=0;
+  document.querySelectorAll("header.top, section").forEach(function(sec){
+    var h2=sec.querySelector("h2"),secName=h2?h2.textContent.trim():"Overview";
+    var els=Array.prototype.slice.call(sec.querySelectorAll(UNITS));
+    els.forEach(function(el){
+      if(el.closest(".sbox")||el.matches(".tscroll tr:first-child"))return;
+      var p=el.parentElement&&el.parentElement.closest(".act, .card, .note, ol.seq > li, ol.steps > li, .tscroll tr, .lose > div, .flow > div, .attrs li");
+      if(p&&p!==el&&els.indexOf(p)>-1)return; /* skip units nested in a bigger unit */
+      var tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),parts=[],nd;while((nd=tw.nextNode())){if(!nd.parentElement.closest("a.art"))parts.push(nd.nodeValue)}var txt=parts.join(" ").replace(/\s+/g," ").replace(/ ([.,:;)])/g,"$1").trim(); if(txt.length<3)return;
+      if(!el.id)el.id="u"+(n++);
+      var t=el.querySelector("h4,b,strong,th"); var title=el.matches("h3")?txt:el.matches("ol.steps > li")?"Setup step "+el.firstElementChild.textContent.trim():el.matches(".card")?el.querySelector("h4").firstChild.textContent:(t?t.textContent.trim():""); title=title.slice(0,80);
+      var body=title&&txt.indexOf(title)===0?txt.slice(title.length).trim():txt;
+      IDX.push({el:el,sec:secName,title:title,txt:body,low:txt.toLowerCase(),tl:title.toLowerCase(),card:el.matches(".card")});
+    });
+  });
+}
+buildIndex();
+
+var panel=document.getElementById("spanel"),sq=document.getElementById("sq"),sres=document.getElementById("sres"),lastFocus=null,sel=-1,hits=[];
+function openSearch(){lastFocus=document.activeElement;panel.classList.remove("hidden");document.body.style.overflow="hidden";sq.focus();sq.select();runSearch()}
+function closeSearch(){panel.classList.add("hidden");document.body.style.overflow="";if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+function hl(s,terms){var out=esc(s);terms.forEach(function(t){if(t.length<2)return;out=out.replace(new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","ig"),"<mark>$1</mark>")});return out}
+function snippet(txt,term){var i=txt.toLowerCase().indexOf(term);var s=Math.max(0,i-50);var e=Math.min(txt.length,s+170);return (s>0?"... ":"")+txt.slice(s,e)+(e<txt.length?" ...":"")}
+function runSearch(){
+  var q=sq.value.trim().toLowerCase();sel=-1;
+  if(q.length<2){sres.innerHTML='<div class="empty">Type at least two letters. Press <b>/</b> anywhere to open search, <b>Esc</b> to close.</div>';hits=[];return}
+  var terms=q.split(/\s+/).filter(Boolean);
+  hits=IDX.filter(function(u){return terms.every(function(t){return u.low.indexOf(t)>-1})}).map(function(u){
+    var sc=0;terms.forEach(function(t){if(u.tl.indexOf(t)>-1)sc+=10;if(u.tl.indexOf(t)===0)sc+=5});if(u.card)sc+=2;sc-=u.txt.length/400;return{u:u,sc:sc}
+  }).sort(function(a,b){return b.sc-a.sc}).slice(0,40).map(function(x){return x.u});
+  if(!hits.length){sres.innerHTML='<div class="empty">No results for "'+esc(q)+'".</div>';return}
+  sres.innerHTML=hits.map(function(u,i){
+    return '<a href="#'+u.el.id+'" role="option" data-i="'+i+'" aria-selected="false"><span class="sec">'+esc(u.sec)+'</span>'+
+      (u.title?'<span class="tt">'+hl(u.title,terms)+'</span>':'')+'<span class="sn">'+hl(snippet(u.txt,terms.filter(function(t){return u.tl.indexOf(t)<0&&u.txt.toLowerCase().indexOf(t)>-1})[0]||""),terms)+'</span></a>'}).join("");
+}
+function go(i){
+  var u=hits[i];if(!u)return;closeSearch();
+  if(u.el.classList.contains("hidden")||u.el.closest(".hidden")){
+    if(u.el.closest("#cards")){cq.value="";setChip("all")}
+    if(u.el.closest("#heroes")){document.getElementById("hq").value="";filterHeroes()}
+  }
+  u.el.scrollIntoView({behavior:"instant",block:"center"});
+  u.el.classList.remove("flash");void u.el.offsetWidth;u.el.classList.add("flash");
+}
+function mark(i){var a=sres.querySelectorAll("a");a.forEach(function(x,j){x.setAttribute("aria-selected",String(j===i))});if(a[i])a[i].scrollIntoView({block:"nearest"});sel=i}
+document.getElementById("sbtn").addEventListener("click",openSearch);
+document.getElementById("sclose").addEventListener("click",closeSearch);
+panel.addEventListener("click",function(e){if(e.target===panel)closeSearch()});
+sq.addEventListener("input",runSearch);
+sres.addEventListener("click",function(e){var a=e.target.closest("a");if(!a)return;e.preventDefault();go(+a.dataset.i)});
+sq.addEventListener("keydown",function(e){
+  if(e.key==="ArrowDown"){e.preventDefault();mark(Math.min(sel+1,hits.length-1))}
+  else if(e.key==="ArrowUp"){e.preventDefault();mark(Math.max(sel-1,0))}
+  else if(e.key==="Enter"){e.preventDefault();go(sel<0?0:sel)}
+});
+document.addEventListener("keydown",function(e){
+  var typing=/INPUT|TEXTAREA/.test((document.activeElement||{}).tagName||"");
+  if(e.key==="Escape"&&!panel.classList.contains("hidden")){closeSearch()}
+  else if((e.key==="/"&&!typing)||((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k")){e.preventDefault();openSearch()}
+});
+})();
+</script>
+</body>
+</html>
